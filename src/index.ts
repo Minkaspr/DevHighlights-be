@@ -1,5 +1,7 @@
 import express from "express";
-process.loadEnvFile();
+if (process.env.NODE_ENV !== "production") {
+  process.loadEnvFile();
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
