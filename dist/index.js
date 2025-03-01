@@ -4,8 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const prisma_1 = require("./db-config/prisma");
 if (process.env.NODE_ENV !== "production") {
     process.loadEnvFile();
+    (0, prisma_1.testConnection)();
 }
 const routes_1 = __importDefault(require("./routes/routes"));
 const app = (0, express_1.default)();
