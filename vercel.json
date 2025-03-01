@@ -2,7 +2,6 @@
   "version": 2,
   "buildCommand": "",
   "installCommand": "npm install",
-  "postInstallCommand": "npm run postinstall",
   "startCommand": "npm run start",
   "routes": [{ "src": "/(.*)", "dest": "dist/index.js" }]
 }
