@@ -1,6 +1,8 @@
 import express from "express";
+import { testConnection } from "./db-config/prisma";
 if (process.env.NODE_ENV !== "production") {
   process.loadEnvFile();
+  testConnection();
 }
 import router from "./routes/routes";
 
