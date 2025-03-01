@@ -1,6 +1,6 @@
 import { Router } from "express";
 import projectRouter from "../modules/project/project-controller";
-import languageRouter from "../modules/language/language-controller";
+import languageRouter from "../modules/language/language.routes"
 import projectTextRouter from "../modules/project-text/project-text-controller";
 import technologyRouter from "../modules/technology/technology-controller";
 import projectTechnologyRouter from "../modules/project-technology/project-technology-controller";
