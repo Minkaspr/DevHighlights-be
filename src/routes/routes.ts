@@ -1,8 +1,8 @@
 import { Router } from "express";
 import projectRouter from "../modules/project/project-controller";
-import languageRouter from "../modules/language/language.routes"
+import languageRouter from "../modules/language/language.router"
 import projectTextRouter from "../modules/project-text/project-text-controller";
-import technologyRouter from "../modules/technology/technology-controller";
+import technologyRouter from "../modules/technology/technology.router"
 import projectTechnologyRouter from "../modules/project-technology/project-technology-controller";
 
 const router = Router();
