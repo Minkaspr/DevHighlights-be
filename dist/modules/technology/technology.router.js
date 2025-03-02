@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const technology_controller_1 = require("./technology.controller");
+const router = (0, express_1.Router)();
+const controller = new technology_controller_1.TechnologyController();
+router.post("/", controller.create.bind(controller));
+router.get("/", controller.getAll.bind(controller));
+router.get("/:id", controller.getById.bind(controller));
+exports.default = router;

@@ -9,31 +9,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LanguageService = void 0;
-const language_repository_1 = require("./language.repository");
-class LanguageService {
-    constructor() {
-        this.languageRepository = new language_repository_1.LanguageRepository();
-    }
-    createLanguage(language) {
+exports.ProjectTechnologyRepository = void 0;
+const client_1 = require("@prisma/client");
+const prisma = new client_1.PrismaClient();
+class ProjectTechnologyRepository {
+    createMany(technologies, tx) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.createLanguage(language);
+            const prismaClient = tx || prisma;
+            return yield prismaClient.projectTechnology.createMany({ data: technologies });
         });
     }
-    getLanguages() {
+    findTechnologiesByProjectId(projectId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.getLanguages();
-        });
-    }
-    getLanguageById(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.getLanguageById(id);
-        });
-    }
-    getLanguageByCode(code) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.getLanguageByCode(code);
+            return yield prisma.projectTechnology.findMany({
+                where: { projectId },
+                include: { technology: true },
+            });
         });
     }
 }
-exports.LanguageService = LanguageService;
+exports.ProjectTechnologyRepository = ProjectTechnologyRepository;

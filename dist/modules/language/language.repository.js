@@ -30,5 +30,10 @@ class LanguageRepository {
             return yield prisma.language.findUnique({ where: { id } });
         });
     }
+    getLanguageByCode(code) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield prisma.language.findUnique({ where: { code } });
+        });
+    }
 }
 exports.LanguageRepository = LanguageRepository;

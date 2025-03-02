@@ -9,31 +9,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LanguageService = void 0;
-const language_repository_1 = require("./language.repository");
-class LanguageService {
+exports.ProjectTextService = void 0;
+const project_text_repository_1 = require("./project-text.repository");
+class ProjectTextService {
     constructor() {
-        this.languageRepository = new language_repository_1.LanguageRepository();
+        this.repository = new project_text_repository_1.ProjectTextRepository();
     }
-    createLanguage(language) {
+    createProjectTexts(texts, tx) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.createLanguage(language);
+            return yield this.repository.createMany(texts, tx);
         });
     }
-    getLanguages() {
+    getAllTextsByProjectId(projectId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.getLanguages();
+            return yield this.repository.getAllByProjectId(projectId);
         });
     }
-    getLanguageById(id) {
+    getTextByProjectIdAndLanguageId(projectId, languageId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.getLanguageById(id);
-        });
-    }
-    getLanguageByCode(code) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.getLanguageByCode(code);
+            return yield this.repository.getByProjectIdAndLanguageId(projectId, languageId);
         });
     }
 }
-exports.LanguageService = LanguageService;
+exports.ProjectTextService = ProjectTextService;

@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const project_controller_1 = require("./project.controller");
+const router = (0, express_1.Router)();
+const controller = new project_controller_1.ProjectController();
+router.post("/project/", controller.create.bind(controller));
+router.get("/lang/:languageCode", controller.getAll.bind(controller));
+router.get("/project/:projectCode", controller.getProjectWithLanguages.bind(controller));
+router.get("/project/:languageCode/:projectCode", controller.getByCode.bind(controller));
+exports.default = router;

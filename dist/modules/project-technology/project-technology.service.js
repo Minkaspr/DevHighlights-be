@@ -9,31 +9,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LanguageService = void 0;
-const language_repository_1 = require("./language.repository");
-class LanguageService {
+exports.ProjectTechnologyService = void 0;
+const project_technology_repository_1 = require("./project-technology.repository");
+class ProjectTechnologyService {
     constructor() {
-        this.languageRepository = new language_repository_1.LanguageRepository();
+        this.repository = new project_technology_repository_1.ProjectTechnologyRepository();
     }
-    createLanguage(language) {
+    createProjectTechnologies(technologies, tx) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.createLanguage(language);
+            return yield this.repository.createMany(technologies, tx);
         });
     }
-    getLanguages() {
+    getTechnologiesByProjectId(projectId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.getLanguages();
-        });
-    }
-    getLanguageById(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.getLanguageById(id);
-        });
-    }
-    getLanguageByCode(code) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.getLanguageByCode(code);
+            const technologies = yield this.repository.findTechnologiesByProjectId(projectId);
+            return technologies.map(t => t.technology.name);
         });
     }
 }
-exports.LanguageService = LanguageService;
+exports.ProjectTechnologyService = ProjectTechnologyService;

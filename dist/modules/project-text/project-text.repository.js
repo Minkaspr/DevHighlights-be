@@ -9,31 +9,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LanguageService = void 0;
-const language_repository_1 = require("./language.repository");
-class LanguageService {
-    constructor() {
-        this.languageRepository = new language_repository_1.LanguageRepository();
-    }
-    createLanguage(language) {
+exports.ProjectTextRepository = void 0;
+const client_1 = require("@prisma/client");
+const prisma = new client_1.PrismaClient();
+class ProjectTextRepository {
+    createMany(texts, tx) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.createLanguage(language);
+            const prismaClient = tx || prisma;
+            return yield prismaClient.projectText.createMany({ data: texts });
         });
     }
-    getLanguages() {
+    getAllByProjectId(projectId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.getLanguages();
+            return yield prisma.projectText.findMany({
+                where: { projectId },
+                include: { language: true }
+            });
         });
     }
-    getLanguageById(id) {
+    getByProjectIdAndLanguageId(projectId, languageId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.getLanguageById(id);
-        });
-    }
-    getLanguageByCode(code) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.getLanguageByCode(code);
+            return yield prisma.projectText.findUnique({
+                where: { projectId_languageId: { projectId, languageId } },
+                include: { language: true }
+            });
         });
     }
 }
-exports.LanguageService = LanguageService;
+exports.ProjectTextRepository = ProjectTextRepository;

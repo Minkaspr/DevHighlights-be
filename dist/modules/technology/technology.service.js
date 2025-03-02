@@ -9,31 +9,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LanguageService = void 0;
-const language_repository_1 = require("./language.repository");
-class LanguageService {
+exports.TechnologyService = void 0;
+const technology_repository_1 = require("./technology.repository");
+class TechnologyService {
     constructor() {
-        this.languageRepository = new language_repository_1.LanguageRepository();
+        this.technologyRepository = new technology_repository_1.TechnologyRepository();
     }
-    createLanguage(language) {
+    createTechnology(name) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.createLanguage(language);
+            return this.technologyRepository.createTechnology(name);
         });
     }
-    getLanguages() {
+    getTechnologies() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.getLanguages();
+            return this.technologyRepository.getTechnologies();
         });
     }
-    getLanguageById(id) {
+    getTechnologyById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.getLanguageById(id);
+            return this.technologyRepository.getTechnologyById(id);
         });
     }
-    getLanguageByCode(code) {
+    getTechnologyByName(name) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.getLanguageByCode(code);
+            return this.technologyRepository.getTechnologyByName(name);
         });
     }
 }
-exports.LanguageService = LanguageService;
+exports.TechnologyService = TechnologyService;

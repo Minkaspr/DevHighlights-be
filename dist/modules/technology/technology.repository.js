@@ -9,31 +9,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LanguageService = void 0;
-const language_repository_1 = require("./language.repository");
-class LanguageService {
-    constructor() {
-        this.languageRepository = new language_repository_1.LanguageRepository();
-    }
-    createLanguage(language) {
+exports.TechnologyRepository = void 0;
+const client_1 = require("@prisma/client");
+const prisma = new client_1.PrismaClient();
+class TechnologyRepository {
+    createTechnology(name) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.createLanguage(language);
+            return yield prisma.technology.create({
+                data: { name },
+            });
         });
     }
-    getLanguages() {
+    getTechnologies() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.getLanguages();
+            return yield prisma.technology.findMany();
         });
     }
-    getLanguageById(id) {
+    getTechnologyById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.getLanguageById(id);
+            return yield prisma.technology.findUnique({ where: { id } });
         });
     }
-    getLanguageByCode(code) {
+    getTechnologyByName(name) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.languageRepository.getLanguageByCode(code);
+            return yield prisma.technology.findUnique({ where: { name } });
         });
     }
 }
-exports.LanguageService = LanguageService;
+exports.TechnologyRepository = TechnologyRepository;
