@@ -1,16 +1,12 @@
 import { Router } from "express";
-import projectRouter from "../modules/project/project-controller";
+import projectRouter from "../modules/project/project.router";
 import languageRouter from "../modules/language/language.router"
-import projectTextRouter from "../modules/project-text/project-text-controller";
 import technologyRouter from "../modules/technology/technology.router"
-import projectTechnologyRouter from "../modules/project-technology/project-technology-controller";
 
 const router = Router();
 
 router.use("/projects", projectRouter);
 router.use("/languages", languageRouter);
-router.use("/project-texts", projectTextRouter);
 router.use("/technologies", technologyRouter);
-router.use("/project-technologies", projectTechnologyRouter);
 
 export default router;

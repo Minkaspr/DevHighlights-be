@@ -17,4 +17,8 @@ export class LanguageRepository {
   async getLanguageById(id: number): Promise<LanguageEntity | null> {
     return await prisma.language.findUnique({ where: { id } });
   }
+
+  async getLanguageByCode(code: string): Promise<LanguageEntity | null> {
+    return await prisma.language.findUnique({ where: { code } });
+  }
 }

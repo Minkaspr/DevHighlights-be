@@ -15,4 +15,8 @@ export class LanguageService {
   async getLanguageById(id: number): Promise<LanguageEntity | null> {
     return this.languageRepository.getLanguageById(id);
   }
+
+  async getLanguageByCode(code: string): Promise<LanguageEntity | null> {
+    return this.languageRepository.getLanguageByCode(code);
+  }
 }

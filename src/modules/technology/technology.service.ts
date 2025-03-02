@@ -15,4 +15,8 @@ export class TechnologyService {
   async getTechnologyById(id: number): Promise<TechnologyEntity | null> {
     return this.technologyRepository.getTechnologyById(id);
   }
+
+  async getTechnologyByName(name: string): Promise<TechnologyEntity | null> {
+    return this.technologyRepository.getTechnologyByName(name);
+  }
 }

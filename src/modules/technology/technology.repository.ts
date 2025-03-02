@@ -17,4 +17,8 @@ export class TechnologyRepository {
   async getTechnologyById(id: number): Promise<TechnologyEntity | null> {
     return await prisma.technology.findUnique({ where: { id } });
   }
+
+  async getTechnologyByName(name: string): Promise<TechnologyEntity | null> {
+    return await prisma.technology.findUnique({ where: { name } });
+  }
 }
