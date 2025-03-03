@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { LanguageService } from "./language.service";
 import { LanguageEntity } from "./language.entity";
-import { dataResponse, errorResponse } from "../../utils/api-response-helpers";
+import { dataResponse, errorResponse } from "../../utils/api-response-helper";
 import { getErrorMessage } from "../../utils/errors-helper";
 
 export class LanguageController {

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { TechnologyService } from "./technology.service";
-import { dataResponse, errorResponse } from "../../utils/api-response-helpers";
+import { dataResponse, errorResponse } from "../../utils/api-response-helper";
 import { getErrorMessage } from "../../utils/errors-helper";
 
 export class TechnologyController {

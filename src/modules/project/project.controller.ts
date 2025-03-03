@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ProjectService } from "./project.service";
 import { ICreateProjectDTO } from "./project-dto";
 import { getErrorMessage } from "../../utils/errors-helper";
-import { dataResponse, errorResponse, successResponse } from "../../utils/api-response-helpers";
+import { dataResponse, errorResponse, successResponse } from "../../utils/api-response-helper";
 
 export class ProjectController {
   private projectService: ProjectService;
@@ -14,12 +14,6 @@ export class ProjectController {
   async create(req: Request, res: Response): Promise<void> {
     try {
       const projectData: ICreateProjectDTO = req.body;
-
-      if (!projectData.projectCode || !projectData.detailsUrl || !projectData.imageUrl) {
-        //res.status(400).json({ message: "Missing required fields" });
-        errorResponse(res, "Missing required fields", 400);
-        return;
-      }
 
       const project = await this.projectService.createProject(projectData);
       //res.status(201).json(project);
@@ -33,12 +27,6 @@ export class ProjectController {
   async getAll(req: Request, res: Response): Promise<void> {
     try {
       const { languageCode } = req.params;
-
-      if (!languageCode) {
-        //res.status(400).json({ message: "Missing languageCode parameter" });
-        errorResponse(res, "Missing languageCode parameter", 400);
-        return;
-      }
 
       const projects = await this.projectService.getProjects(languageCode);
       //res.status(200).json(projects);
@@ -71,12 +59,6 @@ export class ProjectController {
   async getByCode(req: Request, res: Response): Promise<void> {
     try {
       const { languageCode, projectCode } = req.params;
-
-      if (!languageCode || !projectCode) {
-        //res.status(400).json({ message: "Missing languageCode or projectCode parameter" });
-        errorResponse(res, "Missing languageCode or projectCode parameter", 400);
-        return;
-      }
 
       const project = await this.projectService.getProjectByCode(projectCode, languageCode);
       if (!project) {
