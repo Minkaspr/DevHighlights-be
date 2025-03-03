@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { TechnologyService } from "./technology.service";
+import { dataResponse, errorResponse } from "../../utils/api-response-helpers";
+import { getErrorMessage } from "../../utils/errors-helper";
 
 export class TechnologyController {
   private technologyService: TechnologyService;
@@ -12,18 +14,22 @@ export class TechnologyController {
     try {
       const { name } = req.body;
       const technology = await this.technologyService.createTechnology(name);
-      res.status(201).json(technology);
+      //res.status(201).json(technology);
+      dataResponse(res, technology, "Technology created successfully", 201);
     } catch (error) {
-      res.status(500).json({ message: "Error creating technology" });
+      //res.status(500).json({ message: "Error creating technology" });
+      errorResponse(res, "Error creating technology " + getErrorMessage(error), 500);
     }
   }
 
   async getAll(req: Request, res: Response): Promise<void> {
     try {
       const technologies = await this.technologyService.getTechnologies();
-      res.status(200).json(technologies);
+      //res.status(200).json(technologies);
+      dataResponse(res, technologies, "Technologies retrieved successfully");
     } catch (error) {
-      res.status(500).json({ message: "Error retrieving technologies" });
+      //res.status(500).json({ message: "Error retrieving technologies" });
+      errorResponse(res, "Error retrieving technologies " + getErrorMessage(error), 500);
     }
   }
 
@@ -32,12 +38,15 @@ export class TechnologyController {
       const id = parseInt(req.params.id);
       const technology = await this.technologyService.getTechnologyById(id);
       if (!technology) {
-        res.status(404).json({ message: "Technology not found" });
+        //res.status(404).json({ message: "Technology not found" });
+        errorResponse(res, "Technology not found", 404);
       } else {
-        res.status(200).json(technology);
+        //res.status(200).json(technology);
+        dataResponse(res, technology, "Technology retrieved successfully");
       }
     } catch (error) {
-      res.status(500).json({ message: "Error retrieving technology" });
+      //res.status(500).json({ message: "Error retrieving technology" });
+      errorResponse(res, "Error retrieving technology " + getErrorMessage(error), 500);
     }
   }
 }

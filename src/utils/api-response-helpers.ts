@@ -28,7 +28,3 @@ export const successResponse = (res: Response, message = "Operación exitosa", s
 export const errorResponse = (res: Response, message = "Hubo un problema con la solicitud", statusCode = 400) => {
   return apiResponse(res, { status: "error", message }, statusCode);
 };
-
-export const noContentResponse = (res: Response) => {
-  return res.status(204).send();
-};
