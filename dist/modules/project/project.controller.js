@@ -11,7 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProjectController = void 0;
 const project_service_1 = require("./project.service");
-const errors_helper_1 = require("../../utils/errors-helper");
+const api_response_1 = require("../../utils/api-response");
+const error_handler_1 = require("../../utils/error-handler");
 class ProjectController {
     constructor() {
         this.projectService = new project_service_1.ProjectService();
@@ -20,15 +21,14 @@ class ProjectController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const projectData = req.body;
-                if (!projectData.projectCode || !projectData.detailsUrl || !projectData.imageUrl) {
-                    res.status(400).json({ message: "Missing required fields" });
-                    return;
-                }
                 const project = yield this.projectService.createProject(projectData);
-                res.status(201).json(project);
+                //res.status(201).json(project);
+                (0, api_response_1.successResponse)(res, "Project created", 204);
             }
             catch (error) {
-                res.status(500).json({ message: "Error creating project", error: (0, errors_helper_1.getErrorMessage)(error) });
+                //res.status(500).json({ message: "Error creating project", error: getErrorMessage(error) });
+                //errorResponse(res, "Error creating project" + getErrorMessage(error), 500);
+                (0, error_handler_1.errorHandler)(res, error);
             }
         });
     }
@@ -36,15 +36,14 @@ class ProjectController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { languageCode } = req.params;
-                if (!languageCode) {
-                    res.status(400).json({ message: "Missing languageCode parameter" });
-                    return;
-                }
                 const projects = yield this.projectService.getProjects(languageCode);
-                res.status(200).json(projects);
+                //res.status(200).json(projects);
+                (0, api_response_1.dataResponse)(res, projects, "Projects retrieved successfully");
             }
             catch (error) {
-                res.status(500).json({ message: "Error retrieving projects", error: (0, errors_helper_1.getErrorMessage)(error) });
+                // res.status(500).json({ message: "Error retrieving projects", error: getErrorMessage(error) });
+                //errorResponse(res, "Error retrieving projects " + getErrorMessage(error), 500);
+                (0, error_handler_1.errorHandler)(res, error);
             }
         });
     }
@@ -53,13 +52,13 @@ class ProjectController {
             try {
                 const { projectCode } = req.params;
                 const project = yield this.projectService.getProjectWithLanguages(projectCode);
-                if (!project) {
-                    res.status(404).json({ message: "Project not found" });
-                }
-                res.json(project);
+                //res.json(project);
+                (0, api_response_1.dataResponse)(res, project, "Project retrieved successfully");
             }
             catch (error) {
-                res.status(500).json({ message: "Error retrieving project", error: (0, errors_helper_1.getErrorMessage)(error) });
+                //res.status(500).json({ message: "Error retrieving project", error: getErrorMessage(error) });
+                //errorResponse(res, "Error retrieving project " + getErrorMessage(error), 500);
+                (0, error_handler_1.errorHandler)(res, error);
             }
         });
     }
@@ -67,19 +66,14 @@ class ProjectController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { languageCode, projectCode } = req.params;
-                if (!languageCode || !projectCode) {
-                    res.status(400).json({ message: "Missing languageCode or projectCode parameter" });
-                    return;
-                }
                 const project = yield this.projectService.getProjectByCode(projectCode, languageCode);
-                if (!project) {
-                    res.status(404).json({ message: "Project not found" });
-                    return;
-                }
-                res.status(200).json(project);
+                //res.status(200).json(project);
+                (0, api_response_1.dataResponse)(res, project, "Project retrieved successfully");
             }
             catch (error) {
-                res.status(500).json({ message: "Error retrieving project", error: (0, errors_helper_1.getErrorMessage)(error) });
+                //res.status(500).json({ message: "Error retrieving project", error: getErrorMessage(error) });
+                //errorResponse(res, "Error retrieving project " + getErrorMessage(error), 500);
+                (0, error_handler_1.errorHandler)(res, error);
             }
         });
     }

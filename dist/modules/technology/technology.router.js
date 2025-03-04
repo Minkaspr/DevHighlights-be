@@ -2,9 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const technology_controller_1 = require("./technology.controller");
+const validation_middleware_1 = require("../../middlewares/validation-middleware");
+const technology_validator_1 = require("./technology.validator");
 const router = (0, express_1.Router)();
 const controller = new technology_controller_1.TechnologyController();
-router.post("/", controller.create.bind(controller));
+router.post("/", (0, technology_validator_1.createTechnologyValidationRules)(), (0, validation_middleware_1.validateRequest)("Error creating technology"), controller.create.bind(controller));
 router.get("/", controller.getAll.bind(controller));
-router.get("/:id", controller.getById.bind(controller));
+router.get("/:id", (0, technology_validator_1.getTechnologyValidationRules)(), (0, validation_middleware_1.validateRequest)("Invalid ID"), controller.getById.bind(controller));
 exports.default = router;

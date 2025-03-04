@@ -2,10 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const project_controller_1 = require("./project.controller");
+const validation_middleware_1 = require("../../middlewares/validation-middleware");
+const project_validator_1 = require("./project.validator");
 const router = (0, express_1.Router)();
 const controller = new project_controller_1.ProjectController();
-router.post("/project/", controller.create.bind(controller));
-router.get("/lang/:languageCode", controller.getAll.bind(controller));
-router.get("/project/:projectCode", controller.getProjectWithLanguages.bind(controller));
-router.get("/project/:languageCode/:projectCode", controller.getByCode.bind(controller));
+router.post("/project/", (0, project_validator_1.createProjectValidationRules)(), (0, validation_middleware_1.validateRequest)("Error creating project"), controller.create.bind(controller));
+router.get("/lang/:languageCode", (0, project_validator_1.getAllProjectsValidationRules)(), (0, validation_middleware_1.validateRequest)("Invalid language code"), controller.getAll.bind(controller));
+router.get("/project/:projectCode", (0, project_validator_1.getProjectWithLanguagesValidationRules)(), (0, validation_middleware_1.validateRequest)("Invalid project code"), controller.getProjectWithLanguages.bind(controller));
+router.get("/project/:languageCode/:projectCode", (0, project_validator_1.getByCodeValidationRules)(), (0, validation_middleware_1.validateRequest)("Invalid parameters"), controller.getByCode.bind(controller));
 exports.default = router;

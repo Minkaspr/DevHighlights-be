@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TechnologyService = void 0;
 const technology_repository_1 = require("./technology.repository");
+const error_types_1 = require("../../utils/error-types");
 class TechnologyService {
     constructor() {
         this.technologyRepository = new technology_repository_1.TechnologyRepository();
@@ -27,7 +28,11 @@ class TechnologyService {
     }
     getTechnologyById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.technologyRepository.getTechnologyById(id);
+            const technology = yield this.technologyRepository.getTechnologyById(id);
+            if (!technology)
+                throw new error_types_1.NotFoundError("technology", "id", id.toString());
+            return technology;
+            //return this.technologyRepository.getTechnologyById(id);
         });
     }
     getTechnologyByName(name) {
