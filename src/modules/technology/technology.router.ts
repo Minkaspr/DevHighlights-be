@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { TechnologyController } from "./technology.controller";
-import { handleValidationErrors } from "../../middlewares/validation-handler";
-import { createTechnologyValidationRules, getTechnologyValidationRules } from "./technology.validation";
+import { validateRequest } from "../../middlewares/validation-middleware";
+import { createTechnologyValidationRules, getTechnologyValidationRules } from "./technology.validator";
 
 const router = Router();
 const controller = new TechnologyController();
@@ -9,14 +9,14 @@ const controller = new TechnologyController();
 router.post(
   "/", 
   createTechnologyValidationRules(),
-  handleValidationErrors("Error creating technology"),
+  validateRequest("Error creating technology"),
   controller.create.bind(controller)
 );
 router.get("/", controller.getAll.bind(controller));
 router.get(
   "/:id", 
   getTechnologyValidationRules(),
-  handleValidationErrors("Invalid ID"),
+  validateRequest("Invalid ID"),
   controller.getById.bind(controller)
 );
 

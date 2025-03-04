@@ -29,7 +29,7 @@ export const createProjectValidationRules = () => [
     return true;
   }),
 
-  body("languages.*.languageCode")
+  body("languages.*.code")
     .notEmpty().withMessage("Language code is required")
     .isString().withMessage("Language code must be a string")
     .isLength({ min: 2, max: 5 }).withMessage("Language code must be between 2 and 5 characters"),

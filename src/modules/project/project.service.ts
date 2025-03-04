@@ -2,13 +2,14 @@ import { ProjectRepository } from "./project.repository";
 import { ProjectTextService } from "../project-text/project-text.service";
 import { ProjectTechnologyService } from "../project-technology/project-technology.service";
 import { PrismaClient } from "@prisma/client";
-import { ICreateProjectDTO } from "./project-dto";
+import { ProjectCreateRequestDTO } from "./project-dto";
 import { IProject } from "./project.entity";
 import { LanguageService } from "../language/language.service";
 import { TechnologyService } from "../technology/technology.service";
 import { IProjectText } from "../project-text/project-text.entity";
 import { IProjectTechnology } from "../project-technology/project-technology.entity";
-import { getErrorMessage } from "../../utils/errors-helper";
+import { InternalServerError, NotFoundError, UniqueConstraintError } from "../../utils/error-types";
+import { getErrorMessage } from "../../utils/error-helper";
 
 const prisma = new PrismaClient();
 
@@ -27,8 +28,13 @@ export class ProjectService {
     this.technologyService = new TechnologyService();
   }
 
-  async createProject(data: ICreateProjectDTO) {
+  async createProject(data: ProjectCreateRequestDTO) {
     try {
+      const existingProject = await this.projectRepository.getByCode(data.projectCode);
+      if (existingProject) {
+        throw new UniqueConstraintError("projectCode");
+      }
+
       return await prisma.$transaction(async (tx) => {
         const projectData: IProject = {
           projectCode: data.projectCode,
@@ -38,11 +44,9 @@ export class ProjectService {
         const project = await this.projectRepository.create(projectData, tx);
   
         const projectTexts: IProjectText[] = await Promise.all(
-          data.languages.map(async (lang: any) => {
-            const language = await this.languageService.getLanguageByCode(lang.languageCode);
-            if (!language) {
-              throw new Error(`Language with code ${lang.languageCode} not found`);
-            }
+          data.languages.map(async (lang) => {
+            const language = await this.languageService.getLanguageByCode(lang.code);
+            if (!language) throw new NotFoundError("language", "code", lang.code);
             return {
               projectId: project.id,
               languageId: language.id as number,
@@ -57,7 +61,7 @@ export class ProjectService {
         const projectTechnologies: IProjectTechnology[] = await Promise.all(
           data.technologies.map(async (techName) => {
             const technology = await this.technologyService.getTechnologyByName(techName);
-            if (!technology) throw new Error(`Technology '${techName}' not found`);
+            if (!technology) throw new NotFoundError("technology", "technologyName", techName);
             return {
               projectId: project.id,
               technologyId: technology.id as number,
@@ -70,8 +74,10 @@ export class ProjectService {
         return project;
       });
     } catch (error) {
-      console.error("Error creating project:", getErrorMessage(error));
-      throw new Error("Failed to create project. Transaction rolled back.");
+      if (error instanceof NotFoundError || error instanceof UniqueConstraintError) {
+        throw error;
+      }
+      throw new InternalServerError(getErrorMessage(error));
     }
   }
 
@@ -89,14 +95,13 @@ export class ProjectService {
           description: project.texts[0].description
         }
       : null, 
-      technologies: project.technologies.map(t => t.technology.name) // Devolvemos solo los nombres de las tecnologías
+      technologies: project.technologies.map(t => t.technology.name)
     }));
   }
 
   async getProjectWithLanguages(projectCode: string) {
     const project = await this.projectRepository.getProjectWithLanguages(projectCode);
-  
-    if (!project) return null;
+    if (!project) throw new NotFoundError("project", "projectCode", projectCode);
   
     return {
       projectCode: project.projectCode,
@@ -113,16 +118,13 @@ export class ProjectService {
 
   async getProjectByCode(projectCode: string, languageCode: string) {
     const project = await this.projectRepository.getByCode(projectCode);
-    if (!project) return null;
+    if (!project) throw new NotFoundError("project", "projectCode", projectCode);
 
-    // Obtener el ID del idioma a partir del código
     const language = await this.languageService.getLanguageByCode(languageCode);
-    if (!language) return null; // Si el idioma no existe, devolvemos null
+    if (!language) throw new NotFoundError("language", "languageCode", languageCode);
 
-    // Obtener las tecnologías usando el servicio correspondiente
     const technologies = await this.projectTechnologyService.getTechnologiesByProjectId(project.id);
 
-    // Obtener los textos en base al idioma
     const text = await this.projectTextService.getTextByProjectIdAndLanguageId(project.id, language.id as number);
 
     return {
@@ -130,8 +132,8 @@ export class ProjectService {
       projectCode: project.projectCode,
       detailsUrl: project.detailsUrl,
       imageUrl: project.imageUrl,
-      texts: text ? { title: text.title, description: text.description } : null, // Convertimos texts en objeto
-      technologies, // Aquí ya es un array de nombres de tecnologías
+      texts: text ? { title: text.title, description: text.description } : null, 
+      technologies, 
     };
   }
 }

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { ProjectController } from "./project.controller";
-import { handleValidationErrors } from "../../middlewares/validation-handler";
-import { createProjectValidationRules, getAllProjectsValidationRules, getByCodeValidationRules, getProjectWithLanguagesValidationRules } from "./project.validation";
+import { validateRequest } from "../../middlewares/validation-middleware";
+import { createProjectValidationRules, getAllProjectsValidationRules, getByCodeValidationRules, getProjectWithLanguagesValidationRules } from "./project.validator";
 
 const router = Router();
 const controller = new ProjectController();
@@ -9,25 +9,25 @@ const controller = new ProjectController();
 router.post(
   "/project/", 
   createProjectValidationRules(),
-  handleValidationErrors("Error creating project"),
+  validateRequest("Error creating project"),
   controller.create.bind(controller)
 );
 router.get(
   "/lang/:languageCode", 
   getAllProjectsValidationRules(),
-  handleValidationErrors("Invalid language code"),
+  validateRequest("Invalid language code"),
   controller.getAll.bind(controller)
 );
 router.get(
   "/project/:projectCode", 
   getProjectWithLanguagesValidationRules(),
-  handleValidationErrors("Invalid project code"),
+  validateRequest("Invalid project code"),
   controller.getProjectWithLanguages.bind(controller)
 );
 router.get(
   "/project/:languageCode/:projectCode", 
   getByCodeValidationRules(),
-  handleValidationErrors("Invalid parameters"),
+  validateRequest("Invalid parameters"),
   controller.getByCode.bind(controller)
 );
 

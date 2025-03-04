@@ -1,9 +1,9 @@
 import { validationResult } from "express-validator";
 import { Request, Response, NextFunction } from "express";
-import { errorDetailsResponse } from "../utils/api-response-helper";
+import { errorDetailsResponse } from "../utils/api-response";
 
 
-export const handleValidationErrors = (customMessage = "Validation error") => (
+export const validateRequest = (customMessage = "Validation error") => (
   req: Request,
   res: Response,
   next: NextFunction

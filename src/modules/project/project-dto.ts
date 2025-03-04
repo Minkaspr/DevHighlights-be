@@ -1,4 +1,4 @@
-export interface ICreateProjectDTO {
+export interface ProjectCreateRequestDTO {
   projectCode: string;
   detailsUrl: string;
   imageUrl: string;

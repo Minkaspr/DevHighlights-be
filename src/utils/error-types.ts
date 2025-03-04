@@ -1,14 +1,9 @@
-export function getErrorMessage(error: unknown): string {
-  if (error instanceof Error) return error.message;
-  return String(error);
-}
-
 export class UniqueConstraintError extends Error {
   statusCode: number;
   field: string;
 
   constructor(field: string, message?: string) {
-    super(message || `El ${field} ya existe`);
+    super(message || `The ${field} already exists`);
     this.field = field;
     this.statusCode = 409;
   }
@@ -21,7 +16,7 @@ export class NotFoundError extends Error {
   value: string;
 
   constructor(resource: string, field: string, value: string) {
-    super(`No se encontró ningún ${resource}. Valor de '${field}': '${value}'`);
+    super(`No ${resource} found. '${field}' value: '${value}'`);
     this.resource = resource;
     this.field = field;
     this.value = value;
@@ -32,7 +27,8 @@ export class NotFoundError extends Error {
 export class InternalServerError extends Error {
   statusCode: number;
 
-  constructor(message = "Error interno del servidor") {
+  constructor(errorMessage?: string) {
+    const message = "Internal Server Error" + (errorMessage ? `: ${errorMessage}` : "");
     super(message);
     this.statusCode = 500;
   }
