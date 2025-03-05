@@ -1,11 +1,15 @@
 import { LanguageRepository } from "./language.repository";
 import { LanguageEntity } from "./language.entity";
-import { NotFoundError } from "../../utils/error-types";
+import { NotFoundError, UniqueConstraintError } from "../../utils/error-types";
 
 export class LanguageService {
   private languageRepository = new LanguageRepository();
 
   async createLanguage(language: Omit<LanguageEntity, "id">): Promise<LanguageEntity> {
+    const existingLanguage = await this.languageRepository.getLanguageByCode(language.code);
+    if (existingLanguage) {
+      throw new UniqueConstraintError("code");
+    }
     return this.languageRepository.createLanguage(language);
   }
 

@@ -74,9 +74,9 @@ class ProjectService {
             }
         });
     }
-    getProjects(languageCode) {
+    getProjects(languageCode, sortOrder) {
         return __awaiter(this, void 0, void 0, function* () {
-            const projects = yield this.projectRepository.getAll(languageCode);
+            const projects = yield this.projectRepository.getAll(languageCode, sortOrder);
             return projects.map(project => ({
                 id: project.id,
                 projectCode: project.projectCode,

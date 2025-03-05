@@ -14,7 +14,7 @@ export class ProjectRepository {
     });
   }
 
-  async getAll(languageCode: string) {
+  async getAll(languageCode: string, sortOrder: string) {
     return prisma.project.findMany({
       include: {
         texts: { 
@@ -25,6 +25,7 @@ export class ProjectRepository {
           include: { technology: { select: { name: true } } } 
         },
       },
+      orderBy: { id: sortOrder as Prisma.SortOrder}
     });
   }
 

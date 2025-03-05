@@ -36,7 +36,8 @@ class ProjectController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { languageCode } = req.params;
-                const projects = yield this.projectService.getProjects(languageCode);
+                const sortOrder = req.query.sortOrder === "asc" ? "asc" : "desc";
+                const projects = yield this.projectService.getProjects(languageCode, sortOrder);
                 //res.status(200).json(projects);
                 (0, api_response_1.dataResponse)(res, projects, "Projects retrieved successfully");
             }

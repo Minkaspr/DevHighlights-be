@@ -1,11 +1,15 @@
 import { TechnologyRepository } from "./technology.repository";
 import { TechnologyEntity } from "./technology.entity";
-import { NotFoundError } from "../../utils/error-types";
+import { NotFoundError, UniqueConstraintError } from "../../utils/error-types";
 
 export class TechnologyService {
   private technologyRepository = new TechnologyRepository();
 
   async createTechnology(name: string): Promise<TechnologyEntity> {
+    const existingTechnology = await this.technologyRepository.getTechnologyByName(name);
+    if (existingTechnology) {
+      throw new UniqueConstraintError("name");
+    }
     return this.technologyRepository.createTechnology(name);
   }
 

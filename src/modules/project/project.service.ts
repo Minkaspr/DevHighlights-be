@@ -81,8 +81,8 @@ export class ProjectService {
     }
   }
 
-  async getProjects(languageCode: string) {
-    const projects = await this.projectRepository.getAll(languageCode);
+  async getProjects(languageCode: string, sortOrder: string) {
+    const projects = await this.projectRepository.getAll(languageCode, sortOrder);
 
     return projects.map(project => ({
       id: project.id,

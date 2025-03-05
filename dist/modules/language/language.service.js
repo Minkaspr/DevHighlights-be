@@ -18,6 +18,10 @@ class LanguageService {
     }
     createLanguage(language) {
         return __awaiter(this, void 0, void 0, function* () {
+            const existingLanguage = yield this.languageRepository.getLanguageByCode(language.code);
+            if (existingLanguage) {
+                throw new error_types_1.UniqueConstraintError("code");
+            }
             return this.languageRepository.createLanguage(language);
         });
     }

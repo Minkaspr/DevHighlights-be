@@ -18,6 +18,10 @@ class TechnologyService {
     }
     createTechnology(name) {
         return __awaiter(this, void 0, void 0, function* () {
+            const existingTechnology = yield this.technologyRepository.getTechnologyByName(name);
+            if (existingTechnology) {
+                throw new error_types_1.UniqueConstraintError("name");
+            }
             return this.technologyRepository.createTechnology(name);
         });
     }

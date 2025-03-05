@@ -24,7 +24,7 @@ class ProjectRepository {
             });
         });
     }
-    getAll(languageCode) {
+    getAll(languageCode, sortOrder) {
         return __awaiter(this, void 0, void 0, function* () {
             return prisma.project.findMany({
                 include: {
@@ -36,6 +36,7 @@ class ProjectRepository {
                         include: { technology: { select: { name: true } } }
                     },
                 },
+                orderBy: { id: sortOrder }
             });
         });
     }

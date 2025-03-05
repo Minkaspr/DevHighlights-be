@@ -28,8 +28,9 @@ export class ProjectController {
   async getAll(req: Request, res: Response): Promise<void> {
     try {
       const { languageCode } = req.params;
+      const sortOrder = req.query.sortOrder === "asc" ? "asc" : "desc";
 
-      const projects = await this.projectService.getProjects(languageCode);
+      const projects = await this.projectService.getProjects(languageCode, sortOrder);
       //res.status(200).json(projects);
       dataResponse(res, projects, "Projects retrieved successfully");
     } catch (error) {

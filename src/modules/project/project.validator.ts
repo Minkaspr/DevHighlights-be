@@ -1,10 +1,10 @@
-import { body, param } from "express-validator";
+import { body, param, query } from "express-validator";
 
 export const createProjectValidationRules = () => [
   body("projectCode")
     .notEmpty().withMessage("Project code is required")
     .isString().withMessage("Project code must be a string")
-    .isLength({ min: 3, max: 10 }).withMessage("Project code must be between 3 and 10 characters")
+    .isLength({ min: 3, max: 32 }).withMessage("Project code must be between 3 and 32 characters")
     .matches(/^[a-zA-Z0-9_-]+$/).withMessage("Project code can only contain letters, numbers, dashes, and underscores"),
 
   body("detailsUrl")
@@ -68,6 +68,10 @@ export const getAllProjectsValidationRules = () => [
     .notEmpty().withMessage("Language code is required")
     .isString().withMessage("Language code must be a string")
     .isLength({ min: 2, max: 5 }).withMessage("Language code must be between 2 and 5 characters"),
+  query("sortOrder")
+    .optional()
+    .isIn(["asc", "desc"])
+    .withMessage("sortOrder must be 'asc' or 'desc'")
 ];
 
 export const getProjectWithLanguagesValidationRules = () => [
