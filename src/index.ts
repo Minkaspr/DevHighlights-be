@@ -13,7 +13,8 @@ const AUTHOR = process.env.AUTHOR || "Desconocido";
 
 const allowedOrigins = [
   "http://localhost:4200", 
-  "https://portfolio-plum-iota-60.vercel.app"
+  "https://portfolio-plum-iota-60.vercel.app",
+  "https://dev-highlights.vercel.app"
 ];
 
 app.use(cors({
