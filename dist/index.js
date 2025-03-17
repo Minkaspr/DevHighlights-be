@@ -16,7 +16,8 @@ const PORT = process.env.PORT || 3000;
 const AUTHOR = process.env.AUTHOR || "Desconocido";
 const allowedOrigins = [
     "http://localhost:4200",
-    "https://portfolio-plum-iota-60.vercel.app"
+    "https://portfolio-plum-iota-60.vercel.app",
+    "https://dev-highlights.vercel.app"
 ];
 app.use((0, cors_1.default)({
     origin: (origin, callback) => {
